@@ -9,18 +9,38 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 
+typedef struct Pixel {
+  unsigned char a;
+  unsigned char b;
+  unsigned char g;
+  unsigned char r;
+} Pixel;
+
+typedef struct {
+  Pixel *pixels;
+  int pitch;
+} Buffer;
+
 typedef struct AppState {
   bool running;
+  bool debug;
   const char *title;
   int width;
   int height;
   SDL_Window *win;
   SDL_Renderer *rndr;
+  Buffer *bfr;
   SDL_Texture *txtr;
   SDL_Event event;
 } AppState;
+
+typedef struct GameState {
+} GameState;
 
 bool InitApp(AppState *app);
 void DenitApp(AppState *app);
 void HandleEvents(AppState *app);
 void UpdateApp(AppState *app);
+
+Pixel *Rasterize(AppState *app);
+Pixel *RayTrace(AppState *app);

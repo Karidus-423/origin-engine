@@ -3,6 +3,13 @@
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
+#include <stdio.h>
+
+void AllocatePixelBuffer(AppState *app) {
+  // Total Pixels
+  int bfr_size = sizeof(Pixel) * (app->height) * (app->width);
+  return;
+}
 
 bool InitApp(AppState *app) {
   if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -26,6 +33,7 @@ bool InitApp(AppState *app) {
     return false;
   }
 
+  // TODO: Pixel format needs to become dynamic.
   app->txtr =
       SDL_CreateTexture(app->rndr, SDL_PIXELFORMAT_RGBA8888,
                         SDL_TEXTUREACCESS_TARGET, app->width, app->height);
@@ -34,6 +42,8 @@ bool InitApp(AppState *app) {
                  SDL_GetError());
     return false;
   }
+
+  // app->bfr = AllocatePixelBuffer(app);
 
   app->running = true;
   return true;

@@ -1,13 +1,12 @@
 #include "origin.h"
 #include <SDL3/SDL_render.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 void RunApp(AppState *app) {
 
   // Drawig should be in syc with monitor frame rate.
   while (app->running == true) {
-    HandleEvents(app);
-
     SDL_SetRenderDrawColor(app->rndr, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderClear(app->rndr);
 
@@ -21,17 +20,16 @@ void RunApp(AppState *app) {
 int main(int argc, char *argv[]) {
   AppState app = {
       .title = "Pichoo",
-      .width = 500,
-      .height = 500,
+      .width = 1200,
+      .height = 900,
+      .debug = false,
   };
 
-  if (!InitApp(&app)) {
+  if (InitApp(&app) == true) {
+    RunApp(&app);
+  } else {
     SDL_Quit();
     return 1;
-  }
-
-  if (app.running == true) {
-    RunApp(&app);
   }
 
   DenitApp(&app);
