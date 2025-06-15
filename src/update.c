@@ -11,13 +11,10 @@
 
 void DrawFrame(AppState *app) {
   // With the current app state. Draw the pixel accordingly.
-  Buffer *bfr = malloc(sizeof(Buffer));
-  size_t total_pixels = sizeof(Pixel) * (app->height * app->width);
-  bfr->pixels = malloc(total_pixels);
-  bfr->pitch = app->width * sizeof(Pixel);
 
   // Rasterizer
-  bfr->pixels = Rasterize(app);
+  memset(app->bfr->pixels, 0, app->bfr->size);
+  Rasterize(app);
   // RayTracer
   // bfr->pixels = RayTrace(app);
 }
@@ -25,7 +22,7 @@ void DrawFrame(AppState *app) {
 // TODO: This is temporary. Should replace with my own rendering.
 void DebugInfo(AppState *app) {
 
-  // NOTE: If this overflow, we get crash.Add some checks to make sure this
+  // NOTE: If this overflows, we get a crash. Add some checks to make sure this
   // does not happen.
   char win_x[50];
   sprintf(win_x, "Win-X:%d", app->width);
@@ -34,19 +31,18 @@ void DebugInfo(AppState *app) {
 
   /* light blue, full alpha */
   SDL_SetRenderDrawColor(app->rndr, 51, 102, 255, SDL_ALPHA_OPAQUE);
-  SDL_RenderDebugText(app->rndr, 184, 200, "DEBUG ON");
-  SDL_RenderDebugText(app->rndr, 184, 210, win_x);
-  SDL_RenderDebugText(app->rndr, 184, 220, win_y);
+  SDL_RenderDebugText(app->rndr, 175, 200, "DEBUG ON");
+  SDL_RenderDebugText(app->rndr, 175, 210, win_x);
+  SDL_RenderDebugText(app->rndr, 175, 220, win_y);
 }
 
-// Handles all updates. Texture update, Event Updates, etc...
 void UpdateApp(AppState *app) {
 
-  // Hadle Player Actions
   HandleEvents(app);
   if (app->debug == true) {
     DebugInfo(app);
   }
+
   // Reflect Changes in Scene
   // UpdateScene(app);
 

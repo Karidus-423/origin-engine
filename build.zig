@@ -6,6 +6,7 @@ pub fn build(b: *std.Build) !void {
         "events.c",
         "setup.c",
         "update.c",
+        "rasterizer.c",
     };
 
     const exe = b.addExecutable(.{
@@ -16,6 +17,7 @@ pub fn build(b: *std.Build) !void {
     exe.addCSourceFiles(.{
         .root = .{ .cwd_relative = "src" },
         .files = src_files,
+        .flags = &.{"-d"},
     });
 
     exe.linkLibC();

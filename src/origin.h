@@ -9,6 +9,11 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 
+// TODO: SETUP ARENA
+typedef union Arena {
+
+} Arena;
+
 typedef struct Pixel {
   unsigned char a;
   unsigned char b;
@@ -18,15 +23,16 @@ typedef struct Pixel {
 
 typedef struct {
   Pixel *pixels;
+  size_t size;
   int pitch;
 } Buffer;
 
 typedef struct AppState {
   bool running;
   bool debug;
-  const char *title;
   int width;
   int height;
+  const char *title;
   SDL_Window *win;
   SDL_Renderer *rndr;
   Buffer *bfr;
@@ -42,5 +48,5 @@ void DenitApp(AppState *app);
 void HandleEvents(AppState *app);
 void UpdateApp(AppState *app);
 
-Pixel *Rasterize(AppState *app);
+void Rasterize(AppState *app);
 Pixel *RayTrace(AppState *app);

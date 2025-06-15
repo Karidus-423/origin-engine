@@ -3,13 +3,7 @@
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
-#include <stdio.h>
-
-void AllocatePixelBuffer(AppState *app) {
-  // Total Pixels
-  int bfr_size = sizeof(Pixel) * (app->height) * (app->width);
-  return;
-}
+#include <stdlib.h>
 
 bool InitApp(AppState *app) {
   if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -43,7 +37,12 @@ bool InitApp(AppState *app) {
     return false;
   }
 
-  // app->bfr = AllocatePixelBuffer(app);
+  // TODO: CHANGE TO USE ARENAS.
+
+  app->bfr = malloc(sizeof(Buffer));
+  app->bfr->size = app->width * app->height * sizeof(Pixel);
+  app->bfr->pixels = malloc(app->bfr->size);
+  app->bfr->pitch = app->width * sizeof(Pixel);
 
   app->running = true;
   return true;
@@ -52,4 +51,8 @@ bool InitApp(AppState *app) {
 void DenitApp(AppState *app) {
   SDL_DestroyRenderer(app->rndr);
   SDL_DestroyWindow(app->win);
+
+  // TODO: Replace with Arenas
+  free(app->bfr->pixels);
+  free(app->bfr);
 }
